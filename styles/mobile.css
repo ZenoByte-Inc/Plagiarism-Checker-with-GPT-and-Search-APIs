@@ -1,0 +1,131 @@
+@media screen and (min-width:767px){
+    .mobile{
+        display: none !important;
+    }
+}
+@media screen and (max-width:767px){
+   .mobile{
+       display: block !important;
+   }
+    body {
+        min-width: 100%
+    }
+    .front-wrapper {
+        max-height: 100%;
+
+        max-width: 100%;
+    }
+    #account-nav {
+        display: none;
+        z-index: 999;
+    }
+    #account-content {
+        margin-left: 0px;
+        min-width: 0px !important;
+        padding-top: 0px !important;
+    }
+    #account-wrapper {
+        min-width: 0px;
+    }
+
+    #new-document-title {
+        margin-top: 30px !important;
+    }
+    #multi-input {
+        margin: 0px !important;
+    }
+    .carouselExampleSlidesOnly button{
+        font-size: 10px !important;
+    }
+    .carouselExampleSlidesOnly #btn-ani-container {
+        margin: 0 auto;
+        padding: 10px 5px !important;
+    }
+    #account-content #multi-input {
+        width: 100%;
+    }
+
+    #account-section-details {
+        max-width: 100%;
+        margin-left: 25px !important;
+    }
+
+    .navbar-default .navbar-nav>li>a {
+        color: #000;
+        font-size: 14px;
+    }
+
+    .toggleMobile1{
+        display: none;
+    }
+    .toggleMobile2{
+        display: block;
+    }
+    .currentmobile{
+        color: #422fe3 !important;
+    }
+
+    .pro-text {
+        font-size: 13px !important;
+    }
+    .bf-text {
+        font-size: 8px !important;
+    }
+    .check-100-w {
+        font-size: 16px !important;
+    }
+    .p2-list-main .p2-list-item > div .text-11 {
+        font-size: 14px !important;
+    }
+    .p2-list-main .p2-list-item > div .text-22 {
+        font-size: 12px !important;
+    }
+
+    .upgrade-sub-22 .comment-card p {
+        font-size: 12px !important;
+    }
+    .upgrade-sub-22 #plan-name {
+        margin: 0 0 -43px 8px !important;
+    }
+   
+    .modal{
+        left: -150px;
+    }
+
+    .modal-body {
+        margin: 0 150px 0 140px !important;
+    }
+
+    #reports_wrapper {
+        overflow-x: auto !important;
+        margin-right: 0px !important;
+    }
+
+    #upgrade-message h3 {
+        font-size: 22px;
+    }
+
+    .goprobutton{height: 60px !important;width: 145px !important;cursor: pointer;}
+    .pricebutton{
+        height: 55px !important;
+    }
+    .salebutton{
+        height: 40px !important;
+    }
+
+    #account-content{
+        padding: 30px 15px;
+    }
+
+    #app-logo {
+        margin: 0 auto !important;
+    }
+
+    .pro-fea-main img#pro-features-ribbon {
+        margin: 10px
+         -30px
+         9px
+         !important;
+    }
+
+}

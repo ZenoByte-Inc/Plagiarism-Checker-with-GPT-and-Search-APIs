@@ -1,15 +1,11 @@
-import styled from 'styled-components';
-
-const Container = styled.div`
-  width: 100%;
-  height: 100%;
-  overflow-x: hidden;
-`;
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 export default function Home() {
-  return (
-    <Container>
-      <h1>Nextjs Template Javascript and TailwindCss</h1>
-    </Container>
-  );
+  const router = useRouter();
+  useEffect(() => {
+    router.push('/search');
+  }, []);
+
+  return <div></div>;
 }

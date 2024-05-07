@@ -249,20 +249,11 @@ export default function Reports() {
                         </div>
                         <div
                           id="collapse1"
-                          className="acco-body acco-body-plag collapse in"
+                          className="acco-body acco-body-plag  in"
                           data-parent="#reportPageAccordion"
                           style={{ padding: '10px 0px 20px' }}
                         >
                           <div style={{ textAlign: 'center' }} className="no-matches">
-                            {/* <svg
-                              className="animated-checkmark"
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 52 52"
-                              style={{ width: '80px', height: '80px', margin: '0 auto 10px' }}
-                            >
-                              <circle className="checkmark-circle" cx={26} cy={26} r={25} fill="none" />
-                              <path className="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
-                            </svg> */}
                             <Image
                               className="z-10"
                               style={{ width: '80px', height: '80px', margin: '0 auto 10px' }}

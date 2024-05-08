@@ -6,6 +6,14 @@ import React from 'react';
 
 export default function Reports() {
   const { content, titleContent } = useContentInfo();
+
+  const calculateWords = (content) => {
+    const words = content.split(' ');
+    const page = Math.round((words.length / 500) * 10) / 10;
+    if (page < 1) return `${words.length} words (Less than 1 page)`;
+    return `${words.length} words (Less than ${page} page)`;
+  };
+
   return (
     <main>
       <div className="front-wrapper">
@@ -51,7 +59,7 @@ export default function Reports() {
                         }}
                         id="postsearch-wordcount"
                       >
-                        321 words (Less than 1 page)
+                        {calculateWords(content)}
                       </div>
                     </div>
                   </div>

@@ -64,7 +64,7 @@ const NavBar = () => {
           </span>
           <span className="side-nav-label">
             Account
-            <qt-badge className="acc-nav-badge-new">New Feature!</qt-badge>
+            {/* <qt-badge className="acc-nav-badge-new">New Feature!</qt-badge> */}
           </span>
         </Link>
         <div dangerouslySetInnerHTML={{ __html: '\n            ' }} />

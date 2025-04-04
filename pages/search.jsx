@@ -3,12 +3,16 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import NavBar from '@/components/NavBar';
 import axios from 'axios';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { textToBase64 } from '@/utils/common';
+import useResultScan from '@/store/useResultScan';
 
 function Search() {
   const { content, setContent, setTitleContent } = useContentInfo();
   const textareaRef = useRef(null);
+  const [scanId, setScanId] = useState(null);
+  const { setResultScan } = useResultScan();
+
   const router = useRouter();
 
   const handleChangeText = (e) => {
@@ -28,15 +32,27 @@ function Search() {
     // 3. Gửi file để scan
 
     const base64 = await textToBase64(text);
-    console.log('🚀 ~ handleClickButton ~ base64:', base64);
     const { data } = await axios.post(
       '/api/copyleaks/submit',
       { base64: base64, filename: `file.txt` },
       { headers: { Authorization: `Bearer ${access_token}` } },
     );
-    console.log('Scan submitted:', data);
-    router.push('/reports');
+    setScanId(data.scanId);
   };
+
+  useEffect(() => {
+    if (!scanId) return;
+    const interval = setInterval(async () => {
+      const { data } = await axios.get(`/api/copyleaks/scan?scanId=${scanId}`);
+      if (data) {
+        setResultScan(data);
+        clearInterval(interval);
+        router.push(`/reports`);
+      }
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [scanId]);
 
   return (
     <main>

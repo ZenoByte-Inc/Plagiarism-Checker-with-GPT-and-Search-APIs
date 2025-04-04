@@ -1,30 +1,30 @@
 
 services:
-  nextjs-app:
-    container_name: quetext-clone
-    build:
-      context: ./
-      dockerfile: Dockerfile
-    env_file:
-      - .env
-    volumes:
-      - .:/app
-      - nextjs_node_modules:/app/node_modules
-      - nextjs_next:/app/.next
-    restart: always
-    ports:
-      - 3000:3000
-    environment:
-      - NODE_ENV=development
-      - MONGODB_URI=${MONGODB_URI}
-      - COPYLEAKS_EMAIL=${COPYLEAKS_EMAIL}
-      - COPYLEAKS_API_KEY=${COPYLEAKS_API_KEY}
-      - API_URL_AUTH=${API_URL_AUTH}
-      - API_URL_BASE=${API_URL_BASE}
-    networks:
-      - my_network
-    depends_on:
-      - mongo
+  # nextjs-app:
+  #   container_name: quetext-clone
+  #   build:
+  #     context: ./
+  #     dockerfile: Dockerfile
+  #   env_file:
+  #     - .env
+  #   volumes:
+  #     - .:/app
+  #     - nextjs_node_modules:/app/node_modules
+  #     - nextjs_next:/app/.next
+  #   restart: always
+  #   ports:
+  #     - 3000:3000
+  #   environment:
+  #     - NODE_ENV=development
+  #     - MONGODB_URI=${MONGODB_URI}
+  #     - COPYLEAKS_EMAIL=${COPYLEAKS_EMAIL}
+  #     - COPYLEAKS_API_KEY=${COPYLEAKS_API_KEY}
+  #     - API_URL_AUTH=${API_URL_AUTH}
+  #     - API_URL_BASE=${API_URL_BASE}
+  #   networks:
+  #     - my_network
+  #   depends_on:
+  #     - mongo
   # nginx:
   #   image: nginx:latest
   #   container_name: quetext-clone-nginx
@@ -62,4 +62,4 @@ volumes:
 
 networks:
   my_network:
-    external: true
+    driver: bridge

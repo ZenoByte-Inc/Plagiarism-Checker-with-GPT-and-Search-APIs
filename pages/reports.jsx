@@ -3,7 +3,6 @@ import useContentInfo from '@/store/useContent';
 import useResultScan from '@/store/useResultScan';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useEffect } from 'react';
 
 export default function Reports() {
   const { content, titleContent } = useContentInfo();
@@ -16,8 +15,6 @@ export default function Reports() {
     if (page < 1) return `${words.length} words (Less than 1 page)`;
     return `${words.length} words (Less than ${page} page)`;
   };
-
-  useEffect(() => {}, []);
 
   return (
     <main>

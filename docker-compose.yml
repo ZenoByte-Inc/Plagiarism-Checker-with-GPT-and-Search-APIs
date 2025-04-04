@@ -1,35 +1,65 @@
-version: '3'
 
 services:
   nextjs-app:
-    container_name: NextApp
+    container_name: quetext-clone
     build:
       context: ./
       dockerfile: Dockerfile
-    # Set environment variables directly in the docker-compose file
-    # Set envrionment variables based on the .env file
-    # env_file:
-    #   - .env
+    env_file:
+      - .env
     volumes:
-      - .:/app/
+      - .:/app
+      - nextjs_node_modules:/app/node_modules
+      - nextjs_next:/app/.next
     restart: always
     ports:
       - 3000:3000
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=development
+      - MONGODB_URI=${MONGODB_URI}
+      - COPYLEAKS_EMAIL=${COPYLEAKS_EMAIL}
+      - COPYLEAKS_API_KEY=${COPYLEAKS_API_KEY}
+      - API_URL_AUTH=${API_URL_AUTH}
+      - API_URL_BASE=${API_URL_BASE}
     networks:
       - my_network
-  nginx:
-    image: nginx:latest
-    container_name: nginx
-    ports:
-      - '80:80'
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
     depends_on:
-      - nextjs-app
-# Define a network, which allows containers to communicate
-# with each other, by using their container name as a hostname
+      - mongo
+  # nginx:
+  #   image: nginx:latest
+  #   container_name: quetext-clone-nginx
+  #   ports:
+  #     - '80:80'
+  #   volumes:
+  #     - ./nginx.conf:/etc/nginx/nginx.conf
+  #   depends_on:
+  #     - nextjs-app
+  #   networks:
+  #     - my_network
+  #   restart: always
+  #   environment:
+  #     - NODE_ENV=development
+
+  mongo:
+    image: mongo:latest
+    container_name: quetext-clone-mongo
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - my_network
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+
+volumes:
+  mongodb_data:
+  nextjs_node_modules:
+  nextjs_next:
+
 networks:
   my_network:
     external: true

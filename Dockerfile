@@ -7,22 +7,38 @@ WORKDIR /app
 
 # Install dependencies based on the preferred package manager
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
-# Omit --production flag for TypeScript devDependencies
-RUN \
-  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-  elif [ -f package-lock.json ]; then npm ci; \
-  elif [ -f pnpm-lock.yaml ]; then yarn global add pnpm && pnpm i; \
-  # Allow install without lockfile, so example works even without Node.js installed locally
-  else echo "Warning: Lockfile not found. It is recommended to commit lockfiles to version control." && yarn install; \
-  fi
 
+# Install pnpm globally first
+RUN npm install -g pnpm
+
+# Install dependencies
+RUN pnpm install --frozen-lockfile
+
+# Copy the rest of the application
 COPY . .
 
-# Build Next.js based on the preferred package manager
-RUN \
-  if [ -f yarn.lock ]; then yarn build; \
-  elif [ -f package-lock.json ]; then npm run build; \
-  elif [ -f pnpm-lock.yaml ]; then pnpm build; \
-  else yarn build; \
-  fi
-CMD ["yarn", "start"]
+# Build Next.js
+RUN pnpm build
+
+# Production image, copy all the files and run next
+FROM base AS runner
+WORKDIR /app
+
+ENV NODE_ENV production
+
+
+# Copy built files
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+
+# Create necessary directories
+
+USER nextjs
+
+EXPOSE 3000
+
+ENV PORT 3000
+ENV HOSTNAME "0.0.0.0"
+
+CMD ["pnpm", "start"]

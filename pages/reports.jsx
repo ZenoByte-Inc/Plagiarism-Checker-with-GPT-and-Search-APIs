@@ -1,11 +1,14 @@
 import NavBar from '@/components/NavBar';
 import useContentInfo from '@/store/useContent';
+import useResultScan from '@/store/useResultScan';
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 export default function Reports() {
   const { content, titleContent } = useContentInfo();
+  const { resultScan } = useResultScan();
+  console.log('🚀 ~ Reports ~ resultScan:', resultScan);
 
   const calculateWords = (content) => {
     const words = content.split(' ');
@@ -13,6 +16,8 @@ export default function Reports() {
     if (page < 1) return `${words.length} words (Less than 1 page)`;
     return `${words.length} words (Less than ${page} page)`;
   };
+
+  useEffect(() => {}, []);
 
   return (
     <main>

@@ -1,65 +1,19 @@
-
 services:
-  # nextjs-app:
-  #   container_name: quetext-clone
-  #   build:
-  #     context: ./
-  #     dockerfile: Dockerfile
-  #   env_file:
-  #     - .env
-  #   volumes:
-  #     - .:/app
-  #     - nextjs_node_modules:/app/node_modules
-  #     - nextjs_next:/app/.next
-  #   restart: always
-  #   ports:
-  #     - 3000:3000
-  #   environment:
-  #     - NODE_ENV=development
-  #     - MONGODB_URI=${MONGODB_URI}
-  #     - COPYLEAKS_EMAIL=${COPYLEAKS_EMAIL}
-  #     - COPYLEAKS_API_KEY=${COPYLEAKS_API_KEY}
-  #     - API_URL_AUTH=${API_URL_AUTH}
-  #     - API_URL_BASE=${API_URL_BASE}
-  #   networks:
-  #     - my_network
-  #   depends_on:
-  #     - mongo
-  # nginx:
-  #   image: nginx:latest
-  #   container_name: quetext-clone-nginx
-  #   ports:
-  #     - '80:80'
-  #   volumes:
-  #     - ./nginx.conf:/etc/nginx/nginx.conf
-  #   depends_on:
-  #     - nextjs-app
-  #   networks:
-  #     - my_network
-  #   restart: always
-  #   environment:
-  #     - NODE_ENV=development
-
-  mongo:
-    image: mongo:latest
-    container_name: quetext-clone-mongo
-    ports:
-      - '27017:27017'
+  nextjs-app:
+    container_name: quetext-clone
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    env_file:
+      - .env
     volumes:
-      - mongodb_data:/data/db
-    networks:
-      - my_network
+      - .:/app
     restart: always
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
-      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
-
-volumes:
-  mongodb_data:
-  nextjs_node_modules:
-  nextjs_next:
+    ports:
+      - 3000:3000
+    networks:
+      - npm_network
 
 networks:
-  my_network:
-    driver: bridge
+  npm_network:
+    external: true

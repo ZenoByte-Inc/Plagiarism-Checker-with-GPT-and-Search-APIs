@@ -6,10 +6,6 @@ on:
   pull_request:
     branches: [master]
 
-env:
-  MONGODB_URI: mongodb://localhost:27017/quetext-clone
-  NODE_ENV: test
-
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
@@ -23,13 +19,13 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: pnpm install
+        run: npm install
 
       - name: Build application
-        run: pnpm build
+        run: npm run build
 
       - name: Run tests
-        run: pnpm test
+        run: npm test
 
       - name: Docker Login
         if: github.ref == 'refs/heads/main'

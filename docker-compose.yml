@@ -1,16 +1,16 @@
 services:
   nextjs-app:
-    container_name: quetext-clone
+    container_name: quetext-clone-prod
     build:
       context: ./
-      dockerfile: Dockerfile
+      dockerfile: prod.Dockerfile
     env_file:
       - .env
     volumes:
       - .:/app
     restart: always
     ports:
-      - 3000:3000
+      - 3002:3002
     networks:
       - npm_network
 

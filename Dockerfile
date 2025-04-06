@@ -6,19 +6,16 @@ FROM base AS builder
 WORKDIR /app
 
 # Install dependencies based on the preferred package manager
-COPY package.json pnpm-lock.yaml* ./
-
-# Install pnpm globally first
-RUN npm install -g pnpm
+COPY package.json package-lock.json ./
 
 # Install dependencies
-RUN pnpm install --frozen-lockfile  
+RUN npm install --frozen-lockfile  
 
 # Copy the rest of the application
 COPY . .
 
 # Build Next.js
-RUN pnpm build
+RUN npm run build
 
 # Production image, copy all the files and run next
 FROM base AS runner
@@ -37,4 +34,4 @@ EXPOSE 3000
 
 ENV PORT 3000
 
-CMD ["pnpm", "start"]
+CMD ["npm", "run", "start"]

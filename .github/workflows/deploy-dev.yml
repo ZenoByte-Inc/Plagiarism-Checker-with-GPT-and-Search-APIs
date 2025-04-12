@@ -61,6 +61,8 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             # Set Docker image and container name
+            # switch to bash
+            bash -c '
              IMAGE_NAME="${{ secrets.DOCKER_HUB_USERNAME }}//quetext-clone-dev:latest"
              CONTAINER_NAME="quetext-clone-dev"
             
@@ -80,3 +82,4 @@ jobs:
                -e NODE_ENV=development \
                --restart unless-stopped \
                $IMAGE_NAME
+            

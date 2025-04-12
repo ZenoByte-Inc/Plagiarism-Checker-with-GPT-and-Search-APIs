@@ -17,17 +17,6 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-      - name: Create .env file
-        run: |
-          echo "MONGO_INITDB_ROOT_USERNAME=${{ secrets.MONGO_INITDB_ROOT_USERNAME }}" >> .env.development
-          echo "MONGO_INITDB_ROOT_PASSWORD=${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}" >> .env.development
-          echo "MONGO_INITDB_DATABASE=${{ secrets.MONGO_INITDB_DATABASE }}" >> .env.development
-          echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> .env.development
-          echo "NEXT_PUBLIC_BASE_URL=${{ secrets.NEXT_PUBLIC_BASE_URL }}" >> .env.development
-          echo "COPYLEAKS_EMAIL=${{ secrets.COPYLEAKS_EMAIL }}" >> .env.development
-          echo "COPYLEAKS_API_KEY=${{ secrets.COPYLEAKS_API_KEY }}" >> .env.development
-          echo "API_URL_AUTH=${{ secrets.API_URL_AUTH }}" >> .env.development
-          echo "API_URL_BASE=${{ secrets.API_URL_BASE }}" >> .env.development
 
       - name: Install dependencies
         run: npm install
@@ -63,23 +52,49 @@ jobs:
             # Set Docker image and container name
             # switch to bash
             bash -c '
-             IMAGE_NAME="${{ secrets.DOCKER_HUB_USERNAME }}//quetext-clone-dev:latest"
-             CONTAINER_NAME="quetext-clone-dev"
-            
+              DOCKER_HUB_USERNAME="${{ secrets.DOCKER_HUB_USERNAME }}"
+              CONTAINER_NAME="quetext-clone-dev"
+              NETWORK_NAME="npm_network"
+              ENV_FILE_PATH="/opt/env-files/quetext-clone-dev/.env.development"
+
+            # create env file 
+            mkdir -p /opt/env-files/quetext-clone-dev
+            if [ -f "$ENV_FILE_PATH" ]; then
+                echo "Removing existing env file..."
+                rm "$ENV_FILE_PATH"
+              fi
+            cat > /opt/env-files/quetext-clone-dev/.env.development << EOL
+              MONGO_INITDB_ROOT_USERNAME=${{ secrets.MONGO_INITDB_ROOT_USERNAME }}
+              MONGO_INITDB_ROOT_PASSWORD=${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}
+              MONGO_INITDB_DATABASE=${{ secrets.MONGO_INITDB_DATABASE }}
+              MONGODB_URI=${{ secrets.MONGODB_URI }}
+              NEXT_PUBLIC_BASE_URL=${{ secrets.NEXT_PUBLIC_BASE_URL }}
+              COPYLEAKS_EMAIL=${{ secrets.COPYLEAKS_EMAIL }}
+              COPYLEAKS_API_KEY=${{ secrets.COPYLEAKS_API_KEY }}
+              API_URL_AUTH=${{ secrets.API_URL_AUTH }}
+              API_URL_BASE=${{ secrets.API_URL_BASE }}
+
              # Pull the latest image
-             docker pull $IMAGE_NAME
-            
+              docker pull ${DOCKER_HUB_USERNAME}/quetext-clone-dev:latest
+
              # Stop and remove existing container if it exists
-             if [ "$(docker ps -aq -f name=$CONTAINER_NAME)" ]; then
-               docker stop $CONTAINER_NAME
-               docker rm $CONTAINER_NAME
-             fi
-            
+              if [ "$(docker ps -aq -f name=$CONTAINER_NAME)" ]; then
+                docker stop $CONTAINER_NAME
+                docker rm $CONTAINER_NAME
+              fi
+            # Kiểm tra xem network đã tồn tại chưa, nếu chưa thì tạo mới
+              if ! docker network inspect ${NETWORK_NAME} &>/dev/null; then
+                docker network create ${NETWORK_NAME}
+                echo "Created network ${NETWORK_NAME}"
+              fi
+
              # Run new container
-             docker run -d \
-               --name $CONTAINER_NAME \
-               -p 3001:3001 \
-               -e NODE_ENV=development \
-               --restart unless-stopped \
-               $IMAGE_NAME
-            
+              docker run -d \
+                --name $CONTAINER_NAME \
+                -p 3001:3001 \
+                -e NODE_ENV=development \
+                --env-file /opt/env-files/quetext-clone-dev/.env.development \
+                --network ${NETWORK_NAME} \
+                --restart unless-stopped \
+                ${DOCKER_HUB_USERNAME}/quetext-clone-dev:latest
+            '

@@ -6,12 +6,19 @@ import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { textToBase64 } from '@/utils/common';
 import useResultScan from '@/store/useResultScan';
+import Loading from '@/components/Loading';
+import ErrorMessage from '@/components/ErrorMessage';
 
 function Search() {
   const { content, setContent, setTitleContent } = useContentInfo();
   const textareaRef = useRef(null);
   const [scanId, setScanId] = useState(null);
+  const [loading, setLoading] = useState(false);
   const { setResultScan } = useResultScan();
+  const [showError, setShowError] = useState({
+    isVisible: false,
+    message: '',
+  });
 
   const router = useRouter();
 
@@ -41,18 +48,35 @@ function Search() {
   };
 
   useEffect(() => {
-    if (!scanId) return;
-    const interval = setInterval(async () => {
-      const { data } = await axios.get(`/api/copyleaks/scan?scanId=${scanId}`);
-      if (data) {
-        setResultScan(data);
-        clearInterval(interval);
-        router.push(`/reports`);
-      }
-    }, 3000);
+    try {
+      if (!scanId) return;
+      setLoading(true);
+      const interval = setInterval(async () => {
+        const { data } = await axios.get(`/api/copyleaks/scan?scanId=${scanId}`, {
+          timeout: 10000,
+        });
+        if (data) {
+          setLoading(false);
+          setResultScan(data);
+          clearInterval(interval);
+          router.push(`/reports`);
+        }
+      }, 10000);
 
-    return () => clearInterval(interval);
+      return () => clearInterval(interval);
+    } catch (error) {
+      setLoading(false);
+      setShowError({
+        isVisible: true,
+        message: 'Error fetching scan result. Please try again later.',
+      });
+      console.error('Error fetching scan result:', error);
+    }
+    setLoading(false);
   }, [scanId]);
+
+  console.log({ loading });
+  if (loading) return <Loading />;
 
   return (
     <main>
@@ -349,6 +373,9 @@ function Search() {
           </div>
         </div>
       </div>
+      {showError && (
+        <ErrorMessage message={showError.message} onClose={() => setShowError({ isVisible: false, message: '' })} />
+      )}
     </main>
   );
 }

@@ -134,11 +134,11 @@ export default function Reports() {
                           <img src="/plag-sm-icon.svg" alt="" />
                           Plagiarism
                         </div>
-                        <b id="report-page-plag-score">0%</b>
+                        <b id="report-page-plag-score">{resultScan?.aggregatedScore}%</b>
                       </div>
                       <div id="top-annotation-score" className="top-score-div">
                         <div className="flex justify-center items-center">
-                          <img src="/anno-sm-icon.svg" alt="" /> Annotations
+                          <img src="/anno-sm-icon.svg" alt="" /> Remarks
                         </div>
                         <b id="report-page-anno-score">
                           Total: <span-new className="annotation-count">0</span-new>

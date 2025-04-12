@@ -3,18 +3,19 @@ FROM node:20-alpine
 WORKDIR /app
 
 # Install dependencies
-COPY package.json yarn.lock ./
-RUN yarn install
+COPY package*.json ./
+RUN npm install
 
 # Copy the rest of the application
 COPY . .
 
 # Expose the development port
-EXPOSE 3001
 
 # Set environment variables
 ENV PORT 3001
+ARG NODE_ENV=development
 ENV NODE_ENV development
 
+EXPOSE 3001
 # Start the development server
-CMD ["yarn", "dev"]
+CMD ["npm", "run", "dev"]

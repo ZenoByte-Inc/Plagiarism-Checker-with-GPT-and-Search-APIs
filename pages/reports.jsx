@@ -7,13 +7,12 @@ import Link from 'next/link';
 export default function Reports() {
   const { content, titleContent } = useContentInfo();
   const { resultScan } = useResultScan();
-  console.log('🚀 ~ Reports ~ resultScan:', resultScan);
 
-  const calculateWords = (content) => {
-    const words = content.split(' ');
-    const page = Math.round((words.length / 500) * 10) / 10;
-    if (page < 1) return `${words.length} words (Less than 1 page)`;
-    return `${words.length} words (Less than ${page} page)`;
+  const calculateWords = () => {
+    const words = resultScan.totalWords;
+    const page = Math.round((words / 500) * 10) / 10;
+    if (page < 1) return `${words} words (Less than 1 page)`;
+    return `${words} words (${page} pages)`;
   };
 
   return (
@@ -61,7 +60,7 @@ export default function Reports() {
                         }}
                         id="postsearch-wordcount"
                       >
-                        {calculateWords(content)}
+                        {calculateWords()}
                       </div>
                     </div>
                   </div>

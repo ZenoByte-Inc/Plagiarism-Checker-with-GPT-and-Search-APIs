@@ -2,9 +2,9 @@ name: Build, Test & Deploy
 
 on:
   push:
-    branches: [develop]
+    branches: [master]
   pull_request:
-    branches: [develop]
+    branches: [master]
 
 jobs:
   build-and-test:
@@ -24,21 +24,21 @@ jobs:
       - name: Build application
         run: npm run build
       - name: Docker Login
-        if: github.ref == 'refs/heads/develop'
+        if: github.ref == 'refs/heads/master'
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
       - name: Build and push Docker image
-        if: github.ref == 'refs/heads/develop'
+        if: github.ref == 'refs/heads/master'
         run: |
           docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/quetext-clone-dev:latest .
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/quetext-clone-dev:latest
 
   deploy:
     needs: build-and-test
-    if: github.ref == 'refs/heads/develop'
+    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
 
     steps:
@@ -73,9 +73,9 @@ jobs:
               COPYLEAKS_API_KEY=${{ secrets.COPYLEAKS_API_KEY }}
               API_URL_AUTH=${{ secrets.API_URL_AUTH }}
               API_URL_BASE=${{ secrets.API_URL_BASE }}
-              NODE_ENV=development
               EOL
 
+              
              # Pull the latest image
               docker pull ${DOCKER_HUB_USERNAME}/quetext-clone-dev:latest
 
@@ -94,7 +94,7 @@ jobs:
               docker run -d \
                 --name $CONTAINER_NAME \
                 -p 3001:3001 \
-                -e NODE_ENV=development \
+                -e NODE_ENV=production \
                 --env-file /opt/env-files/quetext-clone-dev/.env \
                 --network ${NETWORK_NAME} \
                 --restart unless-stopped \

@@ -11,7 +11,7 @@ export default function Reports() {
   const calculateWords = () => {
     if (!resultScan) return 'N/A';
     const words = resultScan.totalWords;
-    const page = Math.round((words / 500) * 10) / 10;
+    const page = Math.round(((words / 350) * 10) / 10);
     if (page < 1) return `${words} words (Less than 1 page)`;
     return `${words} words (${page} pages)`;
   };
@@ -134,7 +134,7 @@ export default function Reports() {
                           <img src="/plag-sm-icon.svg" alt="" />
                           Plagiarism
                         </div>
-                        <b id="report-page-plag-score">{resultScan?.aggregatedScore}%</b>
+                        <b id="report-page-plag-score">0%</b>
                       </div>
                       <div id="top-annotation-score" className="top-score-div">
                         <div className="flex justify-center items-center">

@@ -28,8 +28,12 @@ function Search() {
 
   const handleClickButton = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const text = textareaRef.current.value;
-    if (!text.trim()) return;
+    if (!text.trim()) {
+      setLoading(false);
+      return;
+    }
     const title = text.split(' ').slice(0, 5).join(' ') + '...';
     setTitleContent(title);
     const {
@@ -49,8 +53,10 @@ function Search() {
 
   useEffect(() => {
     try {
-      if (!scanId) return;
-      setLoading(true);
+      if (!scanId) {
+        setLoading(false);
+        return;
+      }
       const interval = setInterval(async () => {
         const { data } = await axios.get(`/api/copyleaks/scan?scanId=${scanId}`, {
           timeout: 10000,
@@ -75,7 +81,6 @@ function Search() {
     setLoading(false);
   }, [scanId]);
 
-  console.log({ loading });
   if (loading) return <Loading />;
 
   return (

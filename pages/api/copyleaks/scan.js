@@ -8,7 +8,6 @@ export default async function handler(req, res) {
     const data = await ScanResult.findOne({ scanId });
     res.status(200).json(data);
   } catch (error) {
-    console.log('🚀 ~ handler ~ error:', error);
     res.status(400).json({ error: 'Error fetching scan results' });
   }
 }

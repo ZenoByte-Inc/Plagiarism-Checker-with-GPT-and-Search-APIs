@@ -9,6 +9,7 @@ export default function Reports() {
   const { resultScan } = useResultScan();
 
   const calculateWords = () => {
+    if (!resultScan) return 'N/A';
     const words = resultScan.totalWords;
     const page = Math.round((words / 500) * 10) / 10;
     if (page < 1) return `${words} words (Less than 1 page)`;

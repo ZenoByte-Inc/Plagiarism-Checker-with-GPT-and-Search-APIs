@@ -74,6 +74,7 @@ jobs:
               API_URL_AUTH=${{ secrets.API_URL_AUTH }}
               API_URL_BASE=${{ secrets.API_URL_BASE }}
               NODE_ENV=development
+              EOL
 
              # Pull the latest image
               docker pull ${DOCKER_HUB_USERNAME}/quetext-clone-dev:latest

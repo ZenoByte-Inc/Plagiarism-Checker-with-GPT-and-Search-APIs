@@ -73,7 +73,7 @@ jobs:
               COPYLEAKS_API_KEY=${{ secrets.COPYLEAKS_API_KEY }}
               API_URL_AUTH=${{ secrets.API_URL_AUTH }}
               API_URL_BASE=${{ secrets.API_URL_BASE }}
-              EOL
+            EOL
 
               
              # Pull the latest image

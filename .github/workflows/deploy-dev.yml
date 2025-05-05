@@ -55,7 +55,7 @@ jobs:
               DOCKER_HUB_USERNAME="${{ secrets.DOCKER_HUB_USERNAME }}"
               CONTAINER_NAME="quetext-clone-dev"
               NETWORK_NAME="npm_network"
-              ENV_FILE_PATH="/opt/env-files/quetext-clone-dev/.env.development"
+              ENV_FILE_PATH="/opt/env-files/quetext-clone-dev/.env"
 
             # create env file 
             mkdir -p /opt/env-files/quetext-clone-dev
@@ -63,7 +63,7 @@ jobs:
                 echo "Removing existing env file..."
                 rm "$ENV_FILE_PATH"
               fi
-            cat > /opt/env-files/quetext-clone-dev/.env.development << EOL
+            cat > /opt/env-files/quetext-clone-dev/.env << EOL
               MONGO_INITDB_ROOT_USERNAME=${{ secrets.MONGO_INITDB_ROOT_USERNAME }}
               MONGO_INITDB_ROOT_PASSWORD=${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}
               MONGO_INITDB_DATABASE=${{ secrets.MONGO_INITDB_DATABASE }}
@@ -73,6 +73,7 @@ jobs:
               COPYLEAKS_API_KEY=${{ secrets.COPYLEAKS_API_KEY }}
               API_URL_AUTH=${{ secrets.API_URL_AUTH }}
               API_URL_BASE=${{ secrets.API_URL_BASE }}
+              NODE_ENV=development
 
              # Pull the latest image
               docker pull ${DOCKER_HUB_USERNAME}/quetext-clone-dev:latest
@@ -93,7 +94,7 @@ jobs:
                 --name $CONTAINER_NAME \
                 -p 3001:3001 \
                 -e NODE_ENV=development \
-                --env-file /opt/env-files/quetext-clone-dev/.env.development \
+                --env-file /opt/env-files/quetext-clone-dev/.env \
                 --network ${NETWORK_NAME} \
                 --restart unless-stopped \
                 ${DOCKER_HUB_USERNAME}/quetext-clone-dev:latest

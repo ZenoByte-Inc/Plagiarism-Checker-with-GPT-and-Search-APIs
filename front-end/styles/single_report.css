@@ -1,0 +1,67 @@
+@media only screen and (max-width: 500px) {
+  #report-content {
+    margin: 0;
+    padding: 20px;
+  }
+  #report-content > .row {
+    display: block;
+    max-width: 380px;
+  }
+  #report-content > .row > div {
+    display: block;
+    width: 100% !important;
+  }
+  #report-content > .row > div:nth-child(2) {
+    display: flex;
+  }
+  #doc-title {
+  }
+  #doc-title-edit {
+  }
+  #doc-textarea {
+    display: block;
+    padding: 20px;
+    margin: 0;
+  }
+  #doc-details {
+    position: relative;
+  }
+  #results-title {
+    width: 330px;
+  }
+  #results-percentage {
+    display: flex !important;
+    align-items: center;
+  }
+  #doc-results {
+    width: 330px;
+  }
+  #source-actions {
+  }
+  #editButton {
+    margin-top: 30px;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  #report-content > .row {
+    max-width: 340px;
+  }
+  #results-title {
+    width: 300px;
+  }
+  #doc-results {
+    width: 300px;
+  }
+}
+@media only screen and (max-width: 330px) {
+  #report-content > .row {
+    max-width: 250px;
+  }
+  #results-title {
+    width: 250px;
+  }
+  #doc-results {
+    width: 250px;
+  }
+}

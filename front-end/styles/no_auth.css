@@ -1,0 +1,154 @@
+#login-container, #signup-container {
+    max-width: 340px !important;
+}
+.form-error-msg{
+    color: #c83838;
+    text-align: left;
+    width: 100%;
+    font-size: 11px;
+    padding-top: 5px;
+    margin-bottom: 0px;
+}
+.form-error-msg#gdpr-error, .form-error-msg#privacy-error{
+    position: relative;
+    left: -9px;
+}
+#caps-lock-on img{
+    width: 22px;
+    margin-top: 0px;
+    position: relative;
+    top: 4px;
+}
+#caps-lock-on{
+    background-color: #eee;
+    padding: 10px;
+    border-radius: 2px;
+    border: 0px solid #d0d0d0;
+    padding-top: 2px;
+    color: #000;
+    font-weight: 400;
+    font-size: 16px;
+    width: 50%;
+    position: absolute;
+    right: 0;
+    top: 68px;
+    display: none;
+}
+#caps-lock-on::after{
+    content: '';
+    position: absolute;
+    left: 18px;
+    top: -10px;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #eae9e9;
+    clear: both;
+    transform: rotate(180deg);
+}
+.checkbox-label{
+    display: flex;
+    margin-bottom: 0px;
+}
+.w-100{
+    width: 100%;
+}
+.checkbox-label input{
+    margin-left: 0px !important;
+}
+
+.password-strength{
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 2px;
+    border: 0px solid #d0d0d0;
+    padding-top: 2px;
+    color: #000;
+    font-weight: 400;
+    font-size: 16px;
+    position: absolute;
+    right: -21.5rem;
+    top: -40px;
+    z-index: 11;
+    box-shadow: 0px 0px 5px 1px #d2d2d2;
+    width: 300px;
+    display: none;
+}
+.password-strength::after{
+    content: '';
+    position: absolute;
+    left: -16px;
+    top: 70px;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #eae9e9;
+    clear: both;
+    transform: rotate(90deg);
+}
+.password-strength p{
+    text-align: left !important;
+    margin-bottom: 0px !important;
+    padding-top: 0px !important;
+}
+.position-relative{
+    position: relative;
+}
+.password-off{
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1px solid gray;
+    margin-bottom: 0px !important;
+    margin-right: 6px;
+    background-color: #fff;
+    position: relative;
+    top: 1px;
+}
+.password-success{
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1px solid green;
+    margin-bottom: 0px !important;
+    margin-right: 6px;
+    background-color: #fff;
+    position: relative;
+    top: 1px;
+}
+
+.password-danger{
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1px solid red;
+    margin-bottom: 0px !important;
+    margin-right: 6px;
+    position: relative;
+    top: 1px;
+}
+.color-success{
+    color:green;
+}
+.color-danger{
+    color:red;
+}
+
+.modal-guest .password-strength {
+    padding-top: 10px !important;
+    position: absolute;
+    right: 0.5rem !important;
+    top: 85px !important;
+    width: 315px !important;
+    display: none;
+}
+.modal-guest .password-strength::after {
+    left: 13px !important;
+    top: -11px !important;
+    transform: rotate(180deg) !important;
+}

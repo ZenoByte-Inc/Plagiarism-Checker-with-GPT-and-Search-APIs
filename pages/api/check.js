@@ -28,7 +28,7 @@ export default async function handler(req, res) {
 }
 
 async function compareWithTransformer(source, candidates) {
-  const res = await axios.post('http://127.0.0.1:8899/compare', {
+  const res = await axios.post(process.env.NEXT_PUBLIC_API_URL_AI, {
     source,
     candidates,
   });

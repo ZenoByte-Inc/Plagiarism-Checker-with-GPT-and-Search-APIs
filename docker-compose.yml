@@ -13,6 +13,7 @@ services:
       - 3001:3001
     networks:
       - npm_network
+      - local_network
 
   # Add more containers below (nginx, postgres, etc.)
 
@@ -21,3 +22,5 @@ services:
 networks:
   npm_network:
     external: true
+  local_network:
+    driver: bridge

@@ -269,7 +269,7 @@ export default function Reports() {
                               resultScan.sentences
                                 .filter((item) => item.isParaphrased)
                                 .map((item) => (
-                                  <div className="mb-4">
+                                  <div className="mb-4" key={item.id}>
                                     <div className="flex justify-start gap-2 items-center">
                                       <div className="source-percentage-total">
                                         {(Math.round(item.scores * 100) / 100).toFixed(2) * 100 + '%'}

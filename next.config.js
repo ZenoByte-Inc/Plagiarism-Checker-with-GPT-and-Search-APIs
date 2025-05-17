@@ -9,6 +9,9 @@ const nextConfig = {
     // Number of pages that should be kept simultaneously without being disposed
     pagesBufferLength: 5,
   },
+  eslint: {
+    dirs: ['pages', 'utils'], // Only run ESLint on the 'pages' and 'utils' directories during production builds (next build)
+  },
 };
 
 module.exports = nextConfig;

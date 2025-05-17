@@ -79,3 +79,26 @@ export function textToBase64(text) {
     return null;
   }
 }
+
+export const getDomainIntoLink = (link) => {
+  try {
+    if (!link) return '';
+
+    // Add protocol if missing to make URL parsing work
+    if (!link.startsWith('http://') && !link.startsWith('https://')) {
+      link = 'https://' + link;
+    }
+    console.log(link.replace(/^https?:\/\//, '').split('/')[0]);
+    return link.replace(/^https?:\/\//, '').split('/')[0];
+  } catch (error) {
+    console.error('Error parsing URL:', error);
+    return '';
+  }
+};
+
+export const convertLinkToStringHaveSpacer = (link) => {
+  if (!link) return '';
+  const linkWithoutProtocol = link.replace(/^https?:\/\//, '');
+
+  return linkWithoutProtocol.split('/');
+};

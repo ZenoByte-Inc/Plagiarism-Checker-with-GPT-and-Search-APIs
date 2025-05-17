@@ -247,6 +247,13 @@
   font-size: 15px;
   color: #434343;
   font-weight: 300;
+  margin: 0 4px;
+  display: inline-block;
+}
+#report-page-counter-total {
+  font-size: 15px;
+  color: #434343;
+  font-weight: 300;
   padding: 3px;
   margin: 0 8px;
   display: inline-block;

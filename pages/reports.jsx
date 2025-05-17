@@ -1,6 +1,7 @@
 import NavBar from '@/components/NavBar';
 import useContentInfo from '@/store/useContent';
 import useResultScan from '@/store/useResultScan';
+import { convertLinkToStringHaveSpacer, formatUrlToReadable, getDomainIntoLink } from '@/utils/common';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -11,7 +12,7 @@ export default function Reports() {
   const calculateWords = () => {
     if (!resultScan) return 'N/A';
     const words = resultScan.totalWords;
-    const page = Math.round(((words / 350) * 10) / 10);
+    const page = Math.round(((words / 525) * 10) / 10);
     if (page < 1) return `${words} words (Less than 1 page)`;
     return `${words} words (${page} pages)`;
   };
@@ -35,9 +36,12 @@ export default function Reports() {
                   <input type="text" id="new-document-title" style={{ display: 'none' }} />
                   <div className="main-report-box" style={{ position: 'relative' }}>
                     <div id="doc-textarea" className="notextarea" style={{ display: 'block' }}>
-                      <span id="progress-wrapper" className="doc-finished" data-status={1}>
-                        {content}
-                      </span>
+                      {resultScan &&
+                        resultScan.sentences.map((sentence) => (
+                          <span key={sentence.id} className={`${sentence.isParaphrased ? 'inexact-match match' : ''}`}>
+                            {sentence.sentence.trim()}
+                          </span>
+                        ))}
                     </div>
                     <div
                       id="search-multi"
@@ -134,7 +138,7 @@ export default function Reports() {
                           <img src="/plag-sm-icon.svg" alt="" />
                           Plagiarism
                         </div>
-                        <b id="report-page-plag-score">0%</b>
+                        <b id="report-page-plag-score">{Math.round(resultScan?.ratio * 100)}%</b>
                       </div>
                       <div id="top-annotation-score" className="top-score-div">
                         <div className="flex justify-center items-center">
@@ -174,10 +178,12 @@ export default function Reports() {
                     <div id="match-navigator">
                       <i id="nav-prev-match" className="fa fa-angle-left top" aria-hidden="true" />
                       <input type="text" id="current-match-selection" defaultValue="--" />
-                      <span id="report-page-counter">--</span>
+                      <span id="report-page-counter"></span>
                       <i id="nav-next-match" className="fa fa-angle-right top" aria-hidden="true" />
+                      {resultScan?.plagiarized > 0 && (
+                        <span id="report-page-counter-total">{`Total Plagiarism Matches: ${resultScan?.plagiarized}`}</span>
+                      )}
                     </div>
-                    <div id="num-sources-count">No plagiarism matches</div>
                     <span id="report-page-info" />
                     <div className="pull-right">
                       <div className="dropdown">
@@ -257,24 +263,50 @@ export default function Reports() {
                         >
                           Plagiarism Matches <i className="fa fa-caret-down" />
                         </div>
-                        <div
-                          id="collapse1"
-                          className="acco-body acco-body-plag  in"
-                          data-parent="#reportPageAccordion"
-                          style={{ padding: '10px 0px 20px' }}
-                        >
-                          <div style={{ textAlign: 'center' }} className="no-matches">
-                            <Image
-                              className="z-10"
-                              style={{ width: '80px', height: '80px', margin: '0 auto 10px' }}
-                              src={'/Checkmark.png'}
-                              width={80}
-                              height={80}
-                            />
-
-                            <div>No plagiarism found</div>
+                        {resultScan && resultScan?.sentences.filter((item) => item.isParaphrased).length > 0 ? (
+                          <div className="pt-4 pl-8 pb-8 pr-8">
+                            {resultScan &&
+                              resultScan.sentences
+                                .filter((item) => item.isParaphrased)
+                                .map((item) => (
+                                  <div className="mb-4">
+                                    <div className="flex justify-start gap-2 items-center">
+                                      <div className="source-percentage-total">
+                                        {(Math.round(item.scores * 100) / 100).toFixed(2) * 100 + '%'}
+                                      </div>
+                                      <div className="source-title">{getDomainIntoLink(item.links[0])}</div>
+                                    </div>
+                                    <div className="source-url overview ellipsis">
+                                      {convertLinkToStringHaveSpacer(item.links[0]).map((item) => (
+                                        <>
+                                          {item}
+                                          <span className="spacer">›</span>
+                                        </>
+                                      ))}
+                                    </div>
+                                  </div>
+                                ))}
                           </div>
-                        </div>
+                        ) : (
+                          <div
+                            id="collapse1"
+                            className="acco-body acco-body-plag in"
+                            data-parent="#reportPageAccordion"
+                            style={{ padding: '10px 0px 20px' }}
+                          >
+                            <div style={{ textAlign: 'center' }} className="no-matches">
+                              <Image
+                                className="z-10"
+                                style={{ width: '80px', height: '80px', margin: '0 auto 10px' }}
+                                src={'/Checkmark.png'}
+                                width={80}
+                                height={80}
+                              />
+
+                              <div>No plagiarism found</div>
+                            </div>
+                          </div>
+                        )}
                       </div>
                       <div id="acco-anno">
                         <div

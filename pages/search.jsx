@@ -1,18 +1,16 @@
+import ErrorMessage from '@/components/ErrorMessage';
+import Loading from '@/components/Loading';
+import NavBar from '@/components/NavBar';
 import useContentInfo from '@/store/useContent';
+import useResultScan from '@/store/useResultScan';
+import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import NavBar from '@/components/NavBar';
-import axios from 'axios';
-import { useEffect, useRef, useState } from 'react';
-import { textToBase64 } from '@/utils/common';
-import useResultScan from '@/store/useResultScan';
-import Loading from '@/components/Loading';
-import ErrorMessage from '@/components/ErrorMessage';
+import { useRef, useState } from 'react';
 
 function Search() {
   const { content, setContent, setTitleContent } = useContentInfo();
   const textareaRef = useRef(null);
-  const [scanId, setScanId] = useState(null);
   const [loading, setLoading] = useState(false);
   const { setResultScan } = useResultScan();
   const [showError, setShowError] = useState({
@@ -29,57 +27,39 @@ function Search() {
   const handleClickButton = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const text = textareaRef.current.value;
-    if (!text.trim()) {
-      setLoading(false);
-      return;
-    }
-    const title = text.split(' ').slice(0, 5).join(' ') + '...';
-    setTitleContent(title);
-    const {
-      data: { access_token },
-    } = await axios.post('/api/copyleaks/auth');
-
-    // 3. Gửi file để scan
-
-    const base64 = await textToBase64(text);
-    const { data } = await axios.post(
-      '/api/copyleaks/submit',
-      { base64: base64, filename: `file.txt` },
-      { headers: { Authorization: `Bearer ${access_token}` } },
-    );
-    setScanId(data.scanId);
-  };
-
-  useEffect(() => {
     try {
-      if (!scanId) {
+      const text = textareaRef.current.value;
+      if (!text.trim()) {
         setLoading(false);
         return;
       }
-      const interval = setInterval(async () => {
-        const { data } = await axios.get(`/api/copyleaks/scan?scanId=${scanId}`, {
-          timeout: 10000,
-        });
-        if (data) {
-          setLoading(false);
-          setResultScan(data);
-          clearInterval(interval);
-          router.push(`/reports`);
-        }
-      }, 10000);
+      const title = text.split(' ').slice(0, 5).join(' ') + '...';
+      setTitleContent(title);
+      const { data } = await axios.post('/api/check', { text });
+      const threshold = 0.8;
+      const total = data.results.length;
+      const plagiarized = data.results.filter((r) => r.scores >= threshold).length;
+      const totalWords = data.results.reduce((acc, curr) => acc + curr.sentence.split(' ').length, 0);
+      const ratio = plagiarized / total;
 
-      return () => clearInterval(interval);
+      const result = {
+        total,
+        plagiarized,
+        ratio,
+        totalWords,
+        sentences: data.results,
+      };
+      setResultScan(result);
+      setLoading(false);
+      router.push(`/reports`);
     } catch (error) {
       setLoading(false);
       setShowError({
         isVisible: true,
         message: 'Error fetching scan result. Please try again later.',
       });
-      console.error('Error fetching scan result:', error);
     }
-    setLoading(false);
-  }, [scanId]);
+  };
 
   if (loading) return <Loading />;
 

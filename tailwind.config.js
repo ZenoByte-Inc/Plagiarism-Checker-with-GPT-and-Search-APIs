@@ -9,13 +9,12 @@ module.exports = {
     './src/**/*.{html,js,ts,jsx,tsx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'red-button': '#fe5b60',
+      },
+    },
   },
   purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
-  plugins: [
-    require('@tailwindcss/typography'),
-    // require('@tailwindcss/forms'),
-    // require('@tailwindcss/aspect-ratio'),
-    // require('@tailwindcss/line-clamp'),
-  ],
+  plugins: [require('@tailwindcss/typography')],
 };

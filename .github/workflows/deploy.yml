@@ -75,6 +75,7 @@ jobs:
               API_URL_BASE=${{ secrets.API_URL_BASE }}
               GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }}
               GOOGLE_CSE_ID=${{ secrets.GOOGLE_CSE_ID }}
+              NEXT_PUBLIC_API_URL_AI=${{ secrets.NEXT_PUBLIC_API_URL_AI }}
             EOL
 
               

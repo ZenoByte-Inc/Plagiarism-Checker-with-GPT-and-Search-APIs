@@ -25,7 +25,7 @@ RUN addgroup --system --gid 1001 nodejs && \
 
 # Set environment variables
 ENV NODE_ENV production
-ENV PORT 3001
+ENV PORT 3002
 
 # Copy only necessary files from the builder stage
 COPY --from=builder --chown=nextjs:nodejs /app/package.json ./
@@ -38,7 +38,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/next.config.js ./next.config.js
 USER nextjs
 
 # Expose the port
-EXPOSE 3001
+EXPOSE 3002
 
 # Run the application
 CMD ["npm", "start"]

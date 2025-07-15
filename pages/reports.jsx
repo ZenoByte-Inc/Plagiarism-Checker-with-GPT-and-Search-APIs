@@ -11,7 +11,8 @@ export default function Reports() {
 
   const calculateWords = () => {
     if (!resultScan) return 'N/A';
-    const words = 747;
+    const words = resultScan.totalWords;
+    // const words = 747;
     const page = Math.round(((words / 525) * 10) / 10);
     if (page < 1) return `${words} words (Less than 1 page)`;
     return `${words} words (${page} pages)`;

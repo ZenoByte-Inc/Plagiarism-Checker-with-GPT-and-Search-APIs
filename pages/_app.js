@@ -3,7 +3,7 @@ import 'styles/animate.css';
 // import 'styles/bootstrap.min.css';
 import 'styles/font_awesome.min.css';
 import 'styles/grammar_checker.css';
-import 'styles/main.min.css';
+import 'styles/main.css';
 import 'styles/mobile.css';
 import 'styles/no_auth.css';
 import 'styles/search_check_ai.css';
